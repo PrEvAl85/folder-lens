@@ -54,7 +54,10 @@ cd src-tauri && cargo test
 - **Стек:** Tauri 2 (Rust) + веб-интерфейс (Vanilla JS, без фреймворков).
 - **Основные Rust-крейты:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **Хранилище:** локальное, данные не покидают ваш компьютер.
-- **Лицензия:** MIT.
+
+## Лицензия
+
+MIT
 
 ---
 
