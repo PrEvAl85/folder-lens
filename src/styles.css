@@ -101,6 +101,10 @@ select {
   word-break: break-all;
 }
 
+.lang-select {
+  margin-left: auto;
+}
+
 .progress-wrap {
   display: flex;
   align-items: center;

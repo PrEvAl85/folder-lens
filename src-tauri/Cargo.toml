@@ -1,6 +1,6 @@
 [package]
 name = "folder-lens"
-version = "0.1.0"
+version = "0.2.0"
 description = "Lightweight cross-platform folder inventory scanner — see all files grouped by type"
 authors = ["PrEvAl85"]
 edition = "2021"

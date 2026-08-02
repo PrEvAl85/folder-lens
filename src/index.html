@@ -9,24 +9,25 @@
 
   <body>
     <header class="toolbar">
-      <button id="btn-pick" class="primary">Выбрать папку…</button>
-      <span id="root-path" class="root-path">Папка не выбрана</span>
+      <button id="btn-pick" class="primary" data-i18n="pick_folder">Выбрать папку…</button>
+      <span id="root-path" class="root-path"></span>
       <div id="scan-progress-wrap" class="progress-wrap hidden">
         <div class="progress-bar"><div id="scan-progress-fill" class="progress-fill"></div></div>
         <span id="scan-progress-count">0</span>
-        <button id="btn-cancel">Стоп</button>
+        <button id="btn-cancel" data-i18n="stop">Стоп</button>
       </div>
+      <select id="lang-select" class="lang-select" data-i18n-title="select_lang"></select>
     </header>
 
     <main class="layout">
       <aside id="sidebar" class="sidebar">
         <div class="tabs">
-          <button id="tab-types" class="tab active">Типы файлов</button>
-          <button id="tab-empty" class="tab">Пустые папки <span id="empty-count-badge" class="badge hidden"></span></button>
+          <button id="tab-types" class="tab active" data-i18n="tab_types">Типы файлов</button>
+          <button id="tab-empty" class="tab" data-i18n="tab_empty">Пустые папки <span id="empty-count-badge" class="badge hidden"></span></button>
         </div>
 
         <div id="panel-types" class="panel">
-          <input id="ext-search" type="search" placeholder="Фильтр по типу…" autocomplete="off" />
+          <input id="ext-search" type="search" placeholder="Фильтр по типу…" data-i18n-placeholder="filter_type" autocomplete="off" />
           <ul id="group-list" class="group-list"></ul>
         </div>
 
@@ -36,12 +37,12 @@
         </div>
       </aside>
 
-      <div id="resizer-side" class="resizer" title="Изменить ширину панели"></div>
+      <div id="resizer-side" class="resizer" title="Изменить ширину панели" data-i18n-title="resize_panel"></div>
 
       <section class="content">
         <div id="empty-state" class="empty-state">
-          <p>Выберите папку для сканирования.</p>
-          <p class="muted">Приложение покажет все файлы в папке и всех подпапках, сгруппированные по типам, и отдельно — пустые подпапки.</p>
+          <p data-i18n="choose_folder">Выберите папку для сканирования.</p>
+          <p class="muted" data-i18n="choose_folder_hint">Приложение покажет все файлы в папке и всех подпапках, сгруппированные по типам, и отдельно — пустые подпапки.</p>
         </div>
 
         <div id="file-panel" class="file-panel hidden">
@@ -51,34 +52,34 @@
               <span id="group-stats" class="muted"></span>
             </div>
             <div class="file-actions">
-              <input id="file-search" type="search" placeholder="Поиск по имени…" autocomplete="off" />
-              <select id="sort-select" title="Сортировка">
-                <option value="name">Имя</option>
-                <option value="size">Размер</option>
-                <option value="date">Дата</option>
-                <option value="path">Путь</option>
+              <input id="file-search" type="search" placeholder="Поиск по имени…" data-i18n-placeholder="search_name" autocomplete="off" />
+              <select id="sort-select">
+                <option value="name" data-i18n="sort_name">Имя</option>
+                <option value="size" data-i18n="sort_size">Размер</option>
+                <option value="date" data-i18n="sort_date">Дата</option>
+                <option value="path" data-i18n="sort_path">Путь</option>
               </select>
-              <button id="btn-reveal" disabled>В проводнике</button>
-              <button id="btn-move" class="primary" disabled>Переместить…</button>
+              <button id="btn-reveal" disabled data-i18n="in_explorer">В проводнике</button>
+              <button id="btn-move" class="primary" disabled data-i18n="move">Переместить…</button>
             </div>
           </div>
 
           <div class="file-list-head">
-            <span><input type="checkbox" id="check-all" title="Выбрать все" /></span>
-            <span class="col-name">Имя</span>
-            <span class="col-size">Размер</span>
-            <span class="col-date">Изменён</span>
-            <span class="col-path">Путь</span>
+            <span><input type="checkbox" id="check-all" title="Выбрать все" data-i18n-title="select_all" /></span>
+            <span class="col-name" data-i18n="col_name">Имя</span>
+            <span class="col-size" data-i18n="col_size">Размер</span>
+            <span class="col-date" data-i18n="col_date">Изменён</span>
+            <span class="col-path" data-i18n="col_path">Путь</span>
           </div>
           <div id="file-list" class="file-list" role="listbox"></div>
         </div>
 
-        <div id="resizer-preview" class="resizer" title="Изменить ширину предпросмотра"></div>
+        <div id="resizer-preview" class="resizer" title="Изменить ширину предпросмотра" data-i18n-title="resize_preview"></div>
 
         <div id="preview" class="preview hidden">
           <div class="preview-head">
             <span id="preview-title" class="preview-title"></span>
-            <button id="btn-close-preview" class="link" title="Скрыть предпросмотр">✕</button>
+            <button id="btn-close-preview" class="link" title="Скрыть предпросмотр" data-i18n-title="hide_preview">✕</button>
           </div>
           <div id="preview-body" class="preview-body"></div>
         </div>
@@ -92,8 +93,8 @@
       <span id="stat-empty" class="stat"></span>
       <span id="msg" class="msg"></span>
       <span class="spacer"></span>
-      <button id="btn-export" class="link" disabled>Экспорт CSV/JSON</button>
-      <button id="btn-undo" disabled>Отменить последнее перемещение</button>
+      <button id="btn-export" class="link" disabled data-i18n="export">Экспорт CSV/JSON</button>
+      <button id="btn-undo" disabled data-i18n="undo_move">Отменить последнее перемещение</button>
     </footer>
 
     <script type="module" src="/main.js"></script>

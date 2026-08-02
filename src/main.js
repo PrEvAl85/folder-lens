@@ -1,3 +1,5 @@
+import I18N from "./i18n.js";
+
 const globalApi = window.__TAURI__;
 if (!globalApi || !globalApi.core || !globalApi.core.invoke) {
   const body = document.body;
@@ -14,6 +16,8 @@ const { listen } = globalApi.event;
 const { open: pickDir, save } = globalApi.dialog;
 const { revealItemInDir } = globalApi.opener;
 const { join } = globalApi.path;
+
+const { t } = I18N;
 
 const $ = (id) => document.getElementById(id);
 
@@ -69,27 +73,31 @@ const els = {
 };
 
 function fmtSize(bytes) {
-  if (bytes < 1024) return `${bytes} Б`;
-  const units = ["КБ", "МБ", "ГБ", "ТБ"];
+  if (bytes < 1024) return `${bytes} ${t("units.b")}`;
+  const units = ["units.kb", "units.mb", "units.gb", "units.tb"];
   let v = bytes;
   let i = -1;
   do {
     v /= 1024;
     i += 1;
   } while (v >= 1024 && i < units.length - 1);
-  return `${v.toFixed(1)} ${units[i]}`;
+  return `${v.toFixed(1)} ${t(units[i])}`;
 }
 
 function fmtDate(ms) {
   if (!ms) return "—";
-  return new Date(ms).toLocaleString("ru-RU", {
+  return new Date(ms).toLocaleString(I18N.locale(), {
     dateStyle: "medium",
     timeStyle: "short",
   });
 }
 
 function extLabel(ext) {
-  return ext === "" ? "(без расширения)" : `.${ext}`;
+  return ext === "" ? t("no_extension") : `.${ext}`;
+}
+
+function renderRootPath() {
+  els.rootPath.textContent = inventory && inventory.root ? inventory.root : t("no_folder");
 }
 
 function setMsg(text, kind = "") {
@@ -104,17 +112,17 @@ async function scanFolder(path) {
   els.progressFill.style.width = "0%";
   els.progressCount.textContent = "0";
   els.btnCancel.disabled = false;
-  setMsg(`Сканирование: ${path}`, "");
+  setMsg(t("scanning", { path }), "");
 
   try {
     inventory = await invoke("scan_folder", { path });
     if (inventory.cancelled) {
-      setMsg("Сканирование отменено.", "error");
+      setMsg(t("scan_cancelled"), "error");
     } else {
-      setMsg(`Готово: ${inventory.total_files} файлов.`);
+      setMsg(t("done_files", { n: inventory.total_files }));
     }
   } catch (e) {
-    setMsg(`Ошибка сканирования: ${e}`, "error");
+    setMsg(t("scan_error", { e }), "error");
   } finally {
     scanning = false;
     els.progressWrap.classList.add("hidden");
@@ -147,10 +155,10 @@ function renderStats() {
     els.btnExport.disabled = true;
     return;
   }
-  els.statFiles.textContent = `Файлов: ${inventory.total_files}`;
-  els.statSize.textContent = `Объём: ${fmtSize(inventory.total_size)}`;
-  els.statDirs.textContent = `Папок: ${inventory.total_dirs}`;
-  els.statEmpty.textContent = `Пустых папок: ${inventory.empty_dirs.length}`;
+  els.statFiles.textContent = t("stat_files", { n: inventory.total_files });
+  els.statSize.textContent = t("stat_size", { size: fmtSize(inventory.total_size) });
+  els.statDirs.textContent = t("stat_dirs", { n: inventory.total_dirs });
+  els.statEmpty.textContent = t("stat_empty", { n: inventory.empty_dirs.length });
   els.btnExport.disabled = false;
 }
 
@@ -180,7 +188,7 @@ function renderGroups() {
     name.textContent = extLabel(g.extension);
     const count = document.createElement("span");
     count.className = "count";
-    count.textContent = `${g.count} файл${plural(g.count)}`;
+    count.textContent = t("files_count", { n: g.count });
     meta.append(name, count);
 
     const size = document.createElement("span");
@@ -201,14 +209,6 @@ function renderGroups() {
   }
 }
 
-function plural(n) {
-  const m10 = n % 10;
-  const m100 = n % 100;
-  if (m10 === 1 && m100 !== 11) return "";
-  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return "а";
-  return "ов";
-}
-
 function renderEmpty() {
   if (!inventory) {
     els.emptyList.innerHTML = "";
@@ -219,15 +219,15 @@ function renderEmpty() {
   els.emptyBadge.textContent = n;
   els.emptyBadge.classList.toggle("hidden", n === 0);
   els.emptyHint.textContent = n
-    ? `Папок без файлов: ${n}. Клик — открыть в проводнике.`
-    : "Пустых папок нет.";
+    ? t("empty_dirs_hint", { n })
+    : t("no_empty_dirs");
 
   els.emptyList.innerHTML = "";
   for (const rel of inventory.empty_dirs) {
     const li = document.createElement("li");
     const full = join(inventory.root, rel);
     li.textContent = rel;
-    li.title = "Открыть в проводнике";
+    li.title = t("open_in_explorer");
     li.addEventListener("click", () => revealItemInDir(full));
     els.emptyList.appendChild(li);
   }
@@ -252,7 +252,7 @@ function renderFiles() {
   if (!group) return;
 
   els.groupTitle.textContent = extLabel(group.extension);
-  els.groupStats.textContent = `${group.count} файл${plural(group.count)}, ${fmtSize(group.total_size)}`;
+  els.groupStats.textContent = `${t("files_count", { n: group.count })}, ${fmtSize(group.total_size)}`;
 
   const q = els.fileSearch.value.trim().toLowerCase();
   let files = group.files.filter((f) =>
@@ -260,10 +260,10 @@ function renderFiles() {
   );
 
   const sorters = {
-    name: (a, b) => a.name.localeCompare(b.name, "ru"),
+    name: (a, b) => a.name.localeCompare(b.name, I18N.lang),
     size: (a, b) => b.size - a.size,
     date: (a, b) => b.modified_ms - a.modified_ms,
-    path: (a, b) => a.rel_path.localeCompare(b.rel_path),
+    path: (a, b) => a.rel_path.localeCompare(b.rel_path, I18N.lang),
   };
   files = [...files].sort(sorters[sortBy] || sorters.name);
 
@@ -364,7 +364,7 @@ async function updatePreview() {
   els.previewBody.innerHTML = "";
   const loading = document.createElement("p");
   loading.className = "preview-note";
-  loading.textContent = "Загрузка предпросмотра…";
+  loading.textContent = t("preview_loading");
   els.previewBody.appendChild(loading);
 
   const req = ++previewRequest;
@@ -387,7 +387,7 @@ async function updatePreview() {
     } else if (res.kind === "text") {
       const pre = document.createElement("pre");
       pre.textContent = res.truncated
-        ? `(показаны первые 256 КБ)\n\n${res.data}`
+        ? `${t("preview_truncated")}${res.data}`
         : res.data;
       els.previewBody.appendChild(pre);
     } else if (res.kind === "video") {
@@ -399,7 +399,7 @@ async function updatePreview() {
         els.previewBody.appendChild(video);
       } else {
         els.previewBody.appendChild(
-          note(`Встроенный предпросмотр не поддерживает этот видеокодек (${extLabel(f.extension)}).`),
+          note(t("video_codec", { ext: extLabel(f.extension) })),
         );
       }
     } else {
@@ -408,7 +408,7 @@ async function updatePreview() {
   } catch (e) {
     if (req !== previewRequest) return;
     els.previewBody.innerHTML = "";
-    els.previewBody.appendChild(note(`Ошибка предпросмотра: ${e}`));
+    els.previewBody.appendChild(note(t("preview_error", { e })));
   }
 }
 
@@ -421,7 +421,7 @@ function switchTab(which) {
 }
 
 els.btnPick.addEventListener("click", async () => {
-  const dir = await pickDir({ directory: true, title: "Выберите папку для сканирования" });
+  const dir = await pickDir({ directory: true, title: t("pick_title") });
   if (!dir) return;
   els.rootPath.textContent = dir;
   await scanFolder(dir);
@@ -450,12 +450,17 @@ els.btnMove.addEventListener("click", async () => {
 
   const destDir = await pickDir({
     directory: true,
-    title: "Куда переместить файлы?",
+    title: t("move_title"),
   });
   if (!destDir) return;
 
   const ok = confirm(
-    `Переместить ${targets.length} файл${plural(targets.length)} типа «${extLabel(currentExt)}»\nв папку: ${destDir}?\n\nПерезапись не производится — дубли получат суффикс «(1)».`,
+    t("confirm_move", {
+      n: targets.length,
+      count: t("files_count", { n: targets.length }),
+      ext: extLabel(currentExt),
+      dir: destDir,
+    }),
   );
   if (!ok) return;
 
@@ -466,10 +471,13 @@ els.btnMove.addEventListener("click", async () => {
   els.btnUndo.disabled = lastUndo.length === 0;
 
   if (report.errors.length) {
-    setMsg(`Перемещено ${report.moved.length}, ошибок: ${report.errors.length}`, "error");
+    setMsg(
+      t("move_errors", { moved: report.moved.length, errors: report.errors.length }),
+      "error",
+    );
     console.error("move errors", report.errors);
   } else {
-    setMsg(`Перемещено файлов: ${report.moved.length}.`, "ok");
+    setMsg(t("move_done", { n: report.moved.length }), "ok");
   }
   selectedPaths.clear();
   focusedPath = null;
@@ -479,14 +487,17 @@ els.btnMove.addEventListener("click", async () => {
 els.btnUndo.addEventListener("click", async () => {
   if (!lastUndo.length) return;
   const ok = confirm(
-    `Отменить последнее перемещение (${lastUndo.length} файл${plural(lastUndo.length)})?`,
+    t("confirm_undo", { n: lastUndo.length, count: t("files_count", { n: lastUndo.length }) }),
   );
   if (!ok) return;
   const report = await invoke("undo_move", { items: lastUndo });
   if (report.errors.length) {
-    setMsg(`Откат: ${report.moved.length} возвращено, ошибок: ${report.errors.length}`, "error");
+    setMsg(
+      t("undo_errors", { moved: report.moved.length, errors: report.errors.length }),
+      "error",
+    );
   } else {
-    setMsg(`Откат выполнен: ${report.moved.length} файл${plural(report.moved.length)}.`, "ok");
+    setMsg(t("undo_done", { count: t("files_count", { n: report.moved.length }) }), "ok");
   }
   lastUndo = [];
   els.btnUndo.disabled = true;
@@ -498,7 +509,7 @@ els.btnUndo.addEventListener("click", async () => {
 els.btnExport.addEventListener("click", async () => {
   if (!inventory) return;
   const fmt = await save({
-    title: "Экспорт инвентаря",
+    title: t("export_title"),
     defaultPath: "inventory.csv",
     filters: [
       { name: "CSV", extensions: ["csv"] },
@@ -528,9 +539,9 @@ els.btnExport.addEventListener("click", async () => {
       dest: fmt,
       delimiter: ";",
     });
-    setMsg(`Экспорт сохранён: ${fmt}`, "ok");
+    setMsg(t("export_saved", { fmt }), "ok");
   } catch (e) {
-    setMsg(`Ошибка экспорта: ${e}`, "error");
+    setMsg(t("export_error", { e }), "error");
   }
 });
 
@@ -595,4 +606,24 @@ function makeResizer(handle, target, key, min, max) {
 makeResizer(els.resizerSide, els.sidebar, "fl.sidebar.w", 200, 600);
 makeResizer(els.resizerPreview, els.preview, "fl.preview.w", 240, 900);
 
+const langSelect = $("lang-select");
+for (const code of I18N.supported) {
+  const opt = document.createElement("option");
+  opt.value = code;
+  opt.textContent = I18N.names[code];
+  langSelect.appendChild(opt);
+}
+langSelect.value = I18N.lang;
+langSelect.addEventListener("change", () => {
+  I18N.set(langSelect.value);
+  I18N.apply();
+  renderRootPath();
+  renderAll();
+  lastPreviewPath = null;
+  updatePreview();
+  setMsg("", "");
+});
+
+I18N.apply();
+renderRootPath();
 renderAll();
