@@ -1,12 +1,13 @@
 mod actions;
 mod export;
+mod preview;
 mod scan;
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 use scan::ScanResult;
-use tauri::{AppHandle, Emitter, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 
 struct AppState {
     cancel: Arc<AtomicBool>,
@@ -18,6 +19,10 @@ async fn scan_folder(
     state: State<'_, AppState>,
     path: String,
 ) -> Result<ScanResult, String> {
+    app.asset_protocol_scope()
+        .allow_directory(&path, true)
+        .map_err(|e| format!("не удалось открыть доступ к папке: {e}"))?;
+
     state.cancel.store(false, Ordering::SeqCst);
     let cancel = state.cancel.clone();
     let handle = app.clone();
@@ -68,6 +73,11 @@ fn export_inventory(
     }
 }
 
+#[tauri::command]
+fn preview_file(path: String) -> Result<preview::PreviewData, String> {
+    preview::preview_file(&path)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -81,7 +91,8 @@ pub fn run() {
             cancel_scan,
             move_files,
             undo_move,
-            export_inventory
+            export_inventory,
+            preview_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

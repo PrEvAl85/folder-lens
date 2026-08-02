@@ -141,8 +141,7 @@ select {
 /* Layout */
 .layout {
   flex: 1;
-  display: grid;
-  grid-template-columns: 300px 1fr;
+  display: flex;
   min-height: 0;
 }
 
@@ -150,8 +149,38 @@ select {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
+  flex-shrink: 0;
+  width: var(--sidebar-w, 300px);
   border-right: 1px solid var(--border);
   background: var(--bg-elev);
+}
+
+.resizer {
+  width: 6px;
+  margin-left: -1px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: transparent;
+  border-left: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
+  touch-action: none;
+}
+
+.resizer:hover,
+.resizer.active {
+  background: var(--accent);
+  border-left-color: var(--accent);
+}
+
+body.resizing {
+  user-select: none;
+  cursor: col-resize;
+}
+
+body.resizing * {
+  pointer-events: none;
 }
 
 .tabs {
@@ -265,13 +294,17 @@ select {
 
 /* Content */
 .content {
+  flex: 1;
+  min-width: 0;
   min-height: 0;
-  overflow-y: auto;
+  display: flex;
+  overflow: hidden;
   background: var(--bg);
 }
 
 .empty-state {
-  height: 100%;
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -281,9 +314,11 @@ select {
 }
 
 .file-panel {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .file-panel-head {
@@ -344,6 +379,11 @@ select {
   background: var(--bg-elev2);
 }
 
+.file-row.focused {
+  background: var(--bg-elev2);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
 .col-name {
   white-space: nowrap;
   overflow: hidden;
@@ -363,6 +403,75 @@ select {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Preview */
+.preview {
+  width: var(--preview-w, 360px);
+  min-width: 240px;
+  max-width: 70vw;
+  flex-shrink: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elev);
+}
+
+.preview-title {
+  flex: 1;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-body img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-body video {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.preview-body pre {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.preview-note {
+  color: var(--muted);
+  text-align: center;
 }
 
 /* Status bar */

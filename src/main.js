@@ -1,14 +1,26 @@
-import { invoke } from "@tauri-apps/api/core";
-import { listen } from "@tauri-apps/api/event";
-import { open as pickDir, save } from "@tauri-apps/plugin-dialog";
-import { openPath, revealItemInDir } from "@tauri-apps/plugin-opener";
-import { join } from "@tauri-apps/api/path";
+const globalApi = window.__TAURI__;
+if (!globalApi || !globalApi.core || !globalApi.core.invoke) {
+  const body = document.body;
+  body.innerHTML =
+    '<div style="padding:2rem;font-family:sans-serif;color:#fff">' +
+    "<h3>Ошибка запуска</h3>" +
+    "<p>Глобальный API Tauri (<code>window.__TAURI__</code>) недоступен. " +
+    "Приложение должно запускаться через Tauri (tauri dev / tauri build).</p></div>";
+  throw new Error("window.__TAURI__ is not available");
+}
+
+const { invoke, convertFileSrc } = globalApi.core;
+const { listen } = globalApi.event;
+const { open: pickDir, save } = globalApi.dialog;
+const { revealItemInDir } = globalApi.opener;
+const { join } = globalApi.path;
 
 const $ = (id) => document.getElementById(id);
 
 let inventory = null;
 let currentExt = null;
 let selectedPaths = new Set();
+let focusedPath = null;
 let sortBy = "name";
 let lastUndo = [];
 let lastUndoExt = null;
@@ -17,7 +29,6 @@ let scanning = false;
 const els = {
   btnPick: $("btn-pick"),
   btnCancel: $("btn-cancel"),
-  btnOpen: $("btn-open"),
   btnReveal: $("btn-reveal"),
   btnMove: $("btn-move"),
   btnUndo: $("btn-undo"),
@@ -37,12 +48,19 @@ const els = {
   emptyList: $("empty-list"),
   emptyHint: $("empty-hint"),
   emptyBadge: $("empty-count-badge"),
+  sidebar: $("sidebar"),
+  resizerSide: $("resizer-side"),
+  resizerPreview: $("resizer-preview"),
   filePanel: $("file-panel"),
   emptyState: $("empty-state"),
   groupTitle: $("group-title"),
   groupStats: $("group-stats"),
   fileList: $("file-list"),
   checkAll: $("check-all"),
+  preview: $("preview"),
+  previewTitle: $("preview-title"),
+  previewBody: $("preview-body"),
+  btnClosePreview: $("btn-close-preview"),
   statFiles: $("stat-files"),
   statSize: $("stat-size"),
   statDirs: $("stat-dirs"),
@@ -117,6 +135,7 @@ function renderAll() {
   renderEmpty();
   renderStats();
   renderFiles();
+  updatePreview();
 }
 
 function renderStats() {
@@ -172,9 +191,11 @@ function renderGroups() {
     li.addEventListener("click", () => {
       currentExt = g.extension;
       selectedPaths.clear();
+      focusedPath = null;
       els.checkAll.checked = false;
       renderGroups();
       renderFiles();
+      updatePreview();
     });
     els.groupList.appendChild(li);
   }
@@ -251,7 +272,10 @@ function renderFiles() {
     const row = document.createElement("div");
     row.className = "file-row";
     row.setAttribute("role", "option");
+    row.classList.toggle("selected", selectedPaths.has(f.path));
+    row.classList.toggle("focused", f.path === focusedPath);
     row.setAttribute("aria-selected", String(selectedPaths.has(f.path)));
+    row.__path = f.path;
 
     const cbCell = document.createElement("span");
     const cb = document.createElement("input");
@@ -259,6 +283,8 @@ function renderFiles() {
     cb.checked = selectedPaths.has(f.path);
     cb.addEventListener("change", (e) => {
       toggleSelect(f.path, e.target.checked);
+      row.classList.toggle("selected", e.target.checked);
+      row.setAttribute("aria-selected", String(e.target.checked));
       updateButtons();
     });
     cbCell.appendChild(cb);
@@ -282,18 +308,22 @@ function renderFiles() {
     path.title = f.rel_path;
 
     row.append(cbCell, name, size, date, path);
-    row.addEventListener("click", (e) => {
-      if (e.target === cb) return;
-      const next = !selectedPaths.has(f.path);
-      toggleSelect(f.path, next);
-      updateButtons();
+    row.addEventListener("click", () => {
+      setFocus(f.path);
+      updatePreview();
     });
-    row.addEventListener("dblclick", () => openPath(f.path));
     els.fileList.appendChild(row);
   }
 
   els.btnMove.disabled = group.files.length === 0;
   updateButtons();
+}
+
+function setFocus(path) {
+  focusedPath = path;
+  for (const row of els.fileList.children) {
+    row.classList.toggle("focused", row.__path === path);
+  }
 }
 
 function toggleSelect(path, on) {
@@ -303,8 +333,83 @@ function toggleSelect(path, on) {
 
 function updateButtons() {
   const any = selectedPaths.size > 0;
-  els.btnOpen.disabled = !any;
   els.btnReveal.disabled = !any;
+}
+
+let previewRequest = 0;
+let lastPreviewPath = null;
+
+function setPreviewVisible(visible) {
+  els.preview.classList.toggle("hidden", !visible);
+  els.resizerPreview.classList.toggle("hidden", !visible);
+}
+
+async function updatePreview() {
+  if (!inventory || !focusedPath) {
+    lastPreviewPath = null;
+    setPreviewVisible(false);
+    return;
+  }
+  const f = currentFiles().find((x) => x.path === focusedPath);
+  if (!f) {
+    lastPreviewPath = null;
+    setPreviewVisible(false);
+    return;
+  }
+  if (f.path === lastPreviewPath && !els.preview.classList.contains("hidden")) return;
+  lastPreviewPath = f.path;
+
+  setPreviewVisible(true);
+  els.previewTitle.textContent = `${f.name} · ${fmtSize(f.size)}`;
+  els.previewBody.innerHTML = "";
+  const loading = document.createElement("p");
+  loading.className = "preview-note";
+  loading.textContent = "Загрузка предпросмотра…";
+  els.previewBody.appendChild(loading);
+
+  const req = ++previewRequest;
+  const note = (text) => {
+    const p = document.createElement("p");
+    p.className = "preview-note";
+    p.textContent = text;
+    return p;
+  };
+
+  try {
+    const res = await invoke("preview_file", { path: f.path });
+    if (req !== previewRequest) return;
+    els.previewBody.innerHTML = "";
+    if (res.kind === "image") {
+      const img = document.createElement("img");
+      img.src = `data:${res.mime};base64,${res.data}`;
+      img.alt = f.name;
+      els.previewBody.appendChild(img);
+    } else if (res.kind === "text") {
+      const pre = document.createElement("pre");
+      pre.textContent = res.truncated
+        ? `(показаны первые 256 КБ)\n\n${res.data}`
+        : res.data;
+      els.previewBody.appendChild(pre);
+    } else if (res.kind === "video") {
+      const video = document.createElement("video");
+      video.controls = true;
+      video.preload = "metadata";
+      if (video.canPlayType(res.mime)) {
+        video.src = convertFileSrc(f.path);
+        els.previewBody.appendChild(video);
+      } else {
+        els.previewBody.appendChild(
+          note(`Встроенный предпросмотр не поддерживает этот видеокодек (${extLabel(f.extension)}).`),
+        );
+      }
+    } else {
+      els.previewBody.appendChild(note(res.note));
+    }
+  } catch (e) {
+    if (req !== previewRequest) return;
+    els.previewBody.innerHTML = "";
+    els.previewBody.appendChild(note(`Ошибка предпросмотра: ${e}`));
+  }
 }
 
 function switchTab(which) {
@@ -324,11 +429,6 @@ els.btnPick.addEventListener("click", async () => {
 
 els.btnCancel.addEventListener("click", () => {
   invoke("cancel_scan");
-});
-
-els.btnOpen.addEventListener("click", () => {
-  const f = firstSelected();
-  if (f) openPath(f.path);
 });
 
 els.btnReveal.addEventListener("click", () => {
@@ -372,6 +472,7 @@ els.btnMove.addEventListener("click", async () => {
     setMsg(`Перемещено файлов: ${report.moved.length}.`, "ok");
   }
   selectedPaths.clear();
+  focusedPath = null;
   await rescan();
 });
 
@@ -390,6 +491,7 @@ els.btnUndo.addEventListener("click", async () => {
   lastUndo = [];
   els.btnUndo.disabled = true;
   selectedPaths.clear();
+  focusedPath = null;
   await rescan();
 });
 
@@ -439,6 +541,11 @@ els.checkAll.addEventListener("change", (e) => {
     else selectedPaths.delete(f.path);
   }
   renderFiles();
+  updatePreview();
+});
+
+els.btnClosePreview.addEventListener("click", () => {
+  setPreviewVisible(false);
 });
 
 els.extSearch.addEventListener("input", renderGroups);
@@ -457,5 +564,35 @@ listen("scan-progress", (event) => {
   const pct = Math.min(100, Math.max(4, (n % 1000) / 10));
   els.progressFill.style.width = `${pct}%`;
 });
+
+function makeResizer(handle, target, key, min, max) {
+  const saved = Number(localStorage.getItem(key));
+  if (saved && saved >= min && saved <= max) {
+    target.style.width = `${saved}px`;
+  }
+  handle.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    handle.classList.add("active");
+    document.body.classList.add("resizing");
+    const startSize = target.offsetWidth;
+    const startX = e.clientX;
+    const onMove = (ev) => {
+      const size = Math.min(max, Math.max(min, startSize + (ev.clientX - startX)));
+      target.style.width = `${size}px`;
+    };
+    const onUp = () => {
+      handle.classList.remove("active");
+      document.body.classList.remove("resizing");
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      localStorage.setItem(key, String(target.offsetWidth));
+    };
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  });
+}
+
+makeResizer(els.resizerSide, els.sidebar, "fl.sidebar.w", 200, 600);
+makeResizer(els.resizerPreview, els.preview, "fl.preview.w", 240, 900);
 
 renderAll();
