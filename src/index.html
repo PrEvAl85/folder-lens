@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>folder-lens</title>
+  </head>
+
+  <body>
+    <header class="toolbar">
+      <button id="btn-pick" class="primary">Выбрать папку…</button>
+      <span id="root-path" class="root-path">Папка не выбрана</span>
+      <div id="scan-progress-wrap" class="progress-wrap hidden">
+        <div class="progress-bar"><div id="scan-progress-fill" class="progress-fill"></div></div>
+        <span id="scan-progress-count">0</span>
+        <button id="btn-cancel">Стоп</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="tabs">
+          <button id="tab-types" class="tab active">Типы файлов</button>
+          <button id="tab-empty" class="tab">Пустые папки <span id="empty-count-badge" class="badge hidden"></span></button>
+        </div>
+
+        <div id="panel-types" class="panel">
+          <input id="ext-search" type="search" placeholder="Фильтр по типу…" autocomplete="off" />
+          <ul id="group-list" class="group-list"></ul>
+        </div>
+
+        <div id="panel-empty" class="panel hidden">
+          <p class="hint" id="empty-hint"></p>
+          <ul id="empty-list" class="group-list"></ul>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div id="empty-state" class="empty-state">
+          <p>Выберите папку для сканирования.</p>
+          <p class="muted">Приложение покажет все файлы в папке и всех подпапках, сгруппированные по типам, и отдельно — пустые подпапки.</p>
+        </div>
+
+        <div id="file-panel" class="file-panel hidden">
+          <div class="file-panel-head">
+            <div class="title-block">
+              <h2 id="group-title">—</h2>
+              <span id="group-stats" class="muted"></span>
+            </div>
+            <div class="file-actions">
+              <input id="file-search" type="search" placeholder="Поиск по имени…" autocomplete="off" />
+              <select id="sort-select" title="Сортировка">
+                <option value="name">Имя</option>
+                <option value="size">Размер</option>
+                <option value="date">Дата</option>
+                <option value="path">Путь</option>
+              </select>
+              <button id="btn-open" disabled>Открыть</button>
+              <button id="btn-reveal" disabled>В проводнике</button>
+              <button id="btn-move" class="primary" disabled>Переместить…</button>
+            </div>
+          </div>
+
+          <div class="file-list-head">
+            <span><input type="checkbox" id="check-all" title="Выбрать все" /></span>
+            <span class="col-name">Имя</span>
+            <span class="col-size">Размер</span>
+            <span class="col-date">Изменён</span>
+            <span class="col-path">Путь</span>
+          </div>
+          <div id="file-list" class="file-list" role="listbox"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <span id="stat-files" class="stat"></span>
+      <span id="stat-size" class="stat"></span>
+      <span id="stat-dirs" class="stat"></span>
+      <span id="stat-empty" class="stat"></span>
+      <span id="msg" class="msg"></span>
+      <span class="spacer"></span>
+      <button id="btn-export" class="link" disabled>Экспорт CSV/JSON</button>
+      <button id="btn-undo" disabled>Отменить последнее перемещение</button>
+    </footer>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
