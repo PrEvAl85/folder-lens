@@ -1,6 +1,6 @@
 # folder-lens — Inventario de carpetas
 
-[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md)
+[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 Una herramienta ligera de escritorio para el **inventario de carpetas**: escaneo completo, agrupación de archivos por tipo, mover archivos y exportar. Desarrollado con Rust + Tauri 2, se instala en un solo archivo (~10 MB), multiplataforma (Windows / macOS / Linux).
 

@@ -1,6 +1,6 @@
 # folder-lens — Инвентаризация папок
 
-[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md)
+[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 Лёгкий десктопный инструмент для **инвентаризации папок**: полное сканирование, группировка файлов по типам, перемещение файлов и экспорт. Написан на Rust + Tauri 2, устанавливается одним файлом (~10 МБ), кроссплатформенный (Windows / macOS / Linux).
 

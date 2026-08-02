@@ -1,6 +1,6 @@
 # folder-lens — Folder Inventory
 
-[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md)
+[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 A lightweight desktop tool for **folder inventory**: full scanning, grouping files by type, moving files, and exporting. Built with Rust + Tauri 2, installs as a single file (~10 MB), cross-platform (Windows / macOS / Linux).
 
