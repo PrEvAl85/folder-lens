@@ -17,7 +17,7 @@ const { open: pickDir, save } = globalApi.dialog;
 const { revealItemInDir } = globalApi.opener;
 const { join } = globalApi.path;
 
-const { t } = I18N;
+const t = I18N.t.bind(I18N);
 
 const $ = (id) => document.getElementById(id);
 
