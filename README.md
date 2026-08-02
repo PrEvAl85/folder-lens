@@ -1,91 +1,92 @@
-# folder-lens — Инвентаризация папок
+# folder-lens — Folder Inventory
 
-Лёгкий десктопный инструмент для **инвентаризации папок**: полное сканирование, группировка файлов по типам, перемещение файлов и экспорт. Написан на Rust + Tauri 2, устанавливается одним файлом (~10 МБ), кроссплатформенный (Windows / macOS / Linux).
+[English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md)
 
-Удобно, когда файлы «зарыты» в глубоких цепочках подпапок: плоский список с путями сразу показывает, где что лежит.
+A lightweight desktop tool for **folder inventory**: full scanning, grouping files by type, moving files, and exporting. Built with Rust + Tauri 2, installs as a single file (~10 MB), cross-platform (Windows / macOS / Linux).
 
-## Скриншот
+Handy when files are "buried" in deep chains of subfolders: a flat list with paths immediately shows where everything is.
 
-![folder-lens — инвентаризация папок](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+## Screenshot
 
-## Возможности
+![folder-lens — folder inventory](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
 
-- **Сканирование папки** — рекурсивный обход с прогресс-баром и кнопкой остановки.
-- **Группировка по типам** — все файлы сгруппированы по расширению: количество и суммарный размер каждого типа.
-- **Поиск и сортировка** — мгновенный фильтр по имени, сортировка по размеру / количеству / имени.
-- **Список файлов** — каждый тип раскрывается в полный список файлов с путями.
-- **Предпросмотр** — клик по файлу показывает содержимое справа: изображения, текстовые файлы и видео.
-- **Перемещение файлов** — отметьте файлы галочками и перенесите их в выбранную папку; дубликаты не перезаписываются (получают суффикс `(1)`); последнее перемещение можно отменить.
-- **Экспорт** — инвентарь выгружается в CSV (с BOM, разделитель `;`) и JSON.
-- **Пустые папки** — показываются отдельно и открываются в проводнике/Finder.
-- **Настраиваемый интерфейс** — сайдбар и панель предпросмотра изменяются мышью, размеры запоминаются.
+## Features
 
-## Установка
+- **Scan a folder** — recursive walk with a progress bar and a stop button.
+- **Group by type** — all files grouped by extension: count and total size per type.
+- **Search and sort** — instant filter by name, sort by size / count / name.
+- **File list** — each type expands into a full list of files with paths.
+- **Preview** — clicking a file shows its contents on the right: images, text files, and video.
+- **Move files** — tick files and move them to the chosen folder; duplicates are not overwritten (they get a `(1)` suffix); the last move can be undone.
+- **Export** — inventory is exported to CSV (with BOM, `;` separator) and JSON.
+- **Empty folders** — shown separately, click opens in Explorer/Finder.
+- **Customizable UI** — sidebar and preview panel are resizable with the mouse, sizes are remembered.
 
-Скачайте установщик для вашей платформы со страницы [Releases](https://github.com/PrEvAl85/folder-lens/releases):
+## Installation
 
-| Платформа | Файл |
+Download the installer for your platform from the [Releases](https://github.com/PrEvAl85/folder-lens/releases) page:
+
+| Platform | File |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) или `folder-lens_0.1.0_x64_en-US.msi` |
+| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) or `folder-lens_0.1.0_x64_en-US.msi` |
 | macOS (Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
-| macOS (приложение) | `folder-lens_aarch64.app.tar.gz` |
+| macOS (app) | `folder-lens_aarch64.app.tar.gz` |
 | Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
 
-## Сборка и запуск
+## Build & Run
 
-Требования: [Rust](https://rustup.rs) (stable), [Node.js](https://nodejs.org) ≥ 18, системные зависимости [Tauri](https://tauri.app/start/prerequisites/).
+Requirements: [Rust](https://rustup.rs) (stable), [Node.js](https://nodejs.org) ≥ 18, Tauri [system dependencies](https://tauri.app/start/prerequisites/).
 
 ```sh
 npm install
-npm run tauri dev     # разработка
-npm run tauri build   # релизная сборка (msi/nsis/deb/appimage/…)
+npm run tauri dev     # development
+npm run tauri build   # release build (msi/nsis/deb/appimage/…)
 ```
 
-## Тесты
+## Tests
 
 ```sh
 cd src-tauri && cargo test
 ```
 
-Покрытие: сканирование и группировка, отмена сканирования, перемещение без перезаписи, откат перемещения, экспорт CSV/JSON, предпросмотр (изображения / текст / видео).
+Coverage: scanning and grouping, scan cancellation, non-overwriting move, move rollback, CSV/JSON export, preview (images / text / video).
 
-## Технические детали
+## Technical Details
 
-- **Стек:** Tauri 2 (Rust) + веб-интерфейс (Vanilla JS, без фреймворков).
-- **Основные Rust-крейты:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
-- **Хранилище:** локальное, данные не покидают ваш компьютер.
+- **Stack:** Tauri 2 (Rust) + web UI (Vanilla JS, no frameworks).
+- **Key Rust crates:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **Storage:** local, data never leaves your computer.
 
 ---
 
-## Поддержать проект
+## Support the Project
 
-Этот проект создаётся и поддерживается в свободное время. Если folder-lens вам полезен — поддержите развитие:
+This project is created and maintained in free time. If folder-lens is useful to you — help its development:
 
-- ⭐ **Звезда на GitHub** — [PrEvAl85/folder-lens](https://github.com/PrEvAl85/folder-lens)
-- 🐛 **Баг-репорты и идеи** — [Issues](https://github.com/PrEvAl85/folder-lens/issues)
-- 💬 **Репост** — расскажите об инструменте тем, кому он может пригодиться
+- ⭐ **Star on GitHub** — [PrEvAl85/folder-lens](https://github.com/PrEvAl85/folder-lens)
+- 🐛 **Bug reports and ideas** — [Issues](https://github.com/PrEvAl85/folder-lens/issues)
+- 💬 **Share** — tell others who might find it useful
 
-**Финансовая поддержка:**
+**Financial support:**
 
 - ☕ **Boosty** — https://boosty.to/pws/donate
 - 🍩 **DonationAlerts** — https://www.donationalerts.com/r/photowithoutstudio
 
-**Криптовалюта:**
+**Cryptocurrency:**
 
 - USDT (TRC20): `TRcWS42MhyFRGdGSc6LqTH8CdTy6pLUMn6`
 - USDT (BEP20): `0x0905134db34d8d54abf5b60a55406821ed7b8de0`
 - BTC: `17hDrZL62DBpTjK6xNCGFFG682jN9PiVF1`
 - TON: `UQCzoPJlYLHSoFGmRyh_-_ox1nOMCzx3LwG79xPR5pbjs3Aq`
 
-Спасибо, что пользуетесь folder-lens!
+Thank you for using folder-lens!
 
 ---
 
-## Лицензия
+## License
 
-Проект распространяется под лицензией **MIT License** — свободной разрешительной лицензией. Вы можете свободно использовать, копировать, изменять, объединять, публиковать, распространять, сублицензировать и продавать копии программного обеспечения, а также разрешать это другим лицам, при условии включения приведённого ниже уведомления об авторских правах во все копии или значительные части ПО.
+The project is distributed under the **MIT License** — a permissive free-software license. You are free to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software, as well as to permit others to do the same, provided that the copyright notice below is included in all copies or substantial portions of the software.
 
-ПО предоставляется «как есть», без каких-либо явных или подразумеваемых гарантий, включая, но не ограничиваясь, подразумеваемыми гарантиями товарной пригодности и соответствия конкретным целям. Авторы ни при каких обстоятельствах не несут ответственности за любые претензии, ущерб или иные обязательства, возникающие в связи с использованием ПО.
+The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors be liable for any claim, damages or other liability arising from, out of or in connection with the software or its use.
 
-Полный текст лицензии — в файле [LICENSE](LICENSE).
-
+The full license text is in the [LICENSE](LICENSE) file.
