@@ -33,6 +33,12 @@ Descargue el instalador para su plataforma desde la página de [Releases](https:
 | macOS (aplicación) | `folder-lens_aarch64.app.tar.gz` |
 | Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
 
+> **Windows SmartScreen (EXE sin firmar).** Las compilaciones de Windows no están firmadas con un certificado digital (la firma es de pago), por lo que Windows puede mostrar «Windows protegió su equipo» al primer inicio. Esto es normal — el archivo es seguro:
+>
+> - haga clic en **«Más información» → «Ejecutar de todos modos»** (una vez);
+> - o quite la marca «descargado de Internet»: clic derecho en el archivo → **Propiedades** → marque **«Desbloquear»** → Aceptar;
+> - o ejecute `Unblock-File folder-lens_0.1.0_x64-setup.exe` en PowerShell.
+
 ## Compilación y ejecución
 
 Requisitos: [Rust](https://rustup.rs) (stable), [Node.js](https://nodejs.org) ≥ 18, [dependencias del sistema](https://tauri.app/start/prerequisites/) de Tauri.

@@ -33,6 +33,12 @@
 | macOS（アプリ） | `folder-lens_aarch64.app.tar.gz` |
 | Linux | `folder-lens_0.1.0_amd64.AppImage`、`folder-lens_0.1.0_amd64.deb`、`folder-lens-0.1.0-1.x86_64.rpm` |
 
+> **Windows SmartScreen（署名なし EXE）。** Windows ビルドはデジタル証明書で署名されていません（署名は有料）ため、初回起動時に Windows が「Windows によって PC が保護されました」と表示することがあります。これは正常です — ファイルは安全です：
+>
+> - **「詳細情報」→「それでも実行する」** をクリック（一度だけ）；
+> - または「インターネットからダウンロード」のマークを外す：ファイルを右クリック → **プロパティ** → **「ブロックの解除」** にチェック → OK；
+> - または PowerShell で `Unblock-File folder-lens_0.1.0_x64-setup.exe` を実行。
+
 ## ビルドと実行
 
 要件：[Rust](https://rustup.rs)（stable）、[Node.js](https://nodejs.org) ≥ 18、Tauri の[システム依存関係](https://tauri.app/start/prerequisites/)。

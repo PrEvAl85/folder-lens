@@ -33,6 +33,12 @@
 | macOS (приложение) | `folder-lens_aarch64.app.tar.gz` |
 | Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
 
+> **Windows SmartScreen (неподписанный exe).** Сборки Windows не подписаны цифровым сертификатом (подпись платная), поэтому Windows при первом запуске может показать «Windows защитил ваш компьютер». Это нормально — файл безопасен:
+>
+> - нажмите **«Подробнее» → «Выполнить в любом случае»** (одноразово);
+> - или снимите пометку «скачано из интернета»: ПКМ по файлу → **Свойства** → галочка **«Разблокировать»** → ОК;
+> - либо из PowerShell: `Unblock-File folder-lens_0.1.0_x64-setup.exe`.
+
 ## Сборка и запуск
 
 Требования: [Rust](https://rustup.rs) (stable), [Node.js](https://nodejs.org) ≥ 18, системные зависимости [Tauri](https://tauri.app/start/prerequisites/).

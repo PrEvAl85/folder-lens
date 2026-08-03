@@ -33,6 +33,12 @@
 | macOS（应用） | `folder-lens_aarch64.app.tar.gz` |
 | Linux | `folder-lens_0.1.0_amd64.AppImage`、`folder-lens_0.1.0_amd64.deb`、`folder-lens-0.1.0-1.x86_64.rpm` |
 
+> **Windows SmartScreen（未签名 EXE）。** Windows 版本未使用数字证书签名（代码签名是付费的），因此 Windows 在首次启动时可能显示「Windows 已保护你的电脑」。这是正常的 — 文件是安全的：
+>
+> - 点击 **「更多信息」→「仍要运行」**（一次性）；
+> - 或移除「来自 Internet」标记：右键点击文件 → **属性** → 勾选 **「解除锁定」** → 确定；
+> - 或在 PowerShell 中运行 `Unblock-File folder-lens_0.1.0_x64-setup.exe`。
+
 ## 构建与运行
 
 要求：[Rust](https://rustup.rs)（stable）、[Node.js](https://nodejs.org) ≥ 18、Tauri 的[系统依赖](https://tauri.app/start/prerequisites/)。
