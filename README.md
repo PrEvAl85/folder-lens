@@ -1,4 +1,4 @@
-# folder-lens — Folder Inventory
+﻿# folder-lens — Folder Inventory
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@ Handy when files are "buried" in deep chains of subfolders: a flat list with pat
 
 ## Screenshot
 
-![folder-lens — folder inventory](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — folder inventory](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## Features
 
@@ -16,7 +16,7 @@ Handy when files are "buried" in deep chains of subfolders: a flat list with pat
 - **Group by type** — all files grouped by extension: count and total size per type.
 - **Search and sort** — instant filter by name, sort by size / count / name.
 - **File list** — each type expands into a full list of files with paths.
-- **Preview** — clicking a file shows its contents on the right: images, text files, and video.
+- **Preview** — clicking a file shows its contents on the right: images, text files, audio, PDF, Office documents (docx/xlsx/pptx), PSD, and video.
 - **Move files** — tick files and move them to the chosen folder; duplicates are not overwritten (they get a `(1)` suffix); the last move can be undone.
 - **Export** — inventory is exported to CSV (with BOM, `;` separator) and JSON.
 - **Empty folders** — shown separately, click opens in Explorer/Finder.
@@ -28,16 +28,16 @@ Download the installer for your platform from the [Releases](https://github.com/
 
 | Platform | File |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) or `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS (Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe` (NSIS) or `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS (Apple Silicon) | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS (app) | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`, `folder-lens_0.3.0_amd64.deb`, `folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen (unsigned EXE).** The Windows builds are not signed with a digital certificate (code signing is paid), so Windows may show "Windows protected your PC" on first launch. This is expected — the file is safe:
 >
 > - click **"More info" → "Run anyway"** (one-time);
 > - or remove the "downloaded from the internet" mark: right-click the file → **Properties** → check **"Unblock"** → OK;
-> - or run `Unblock-File folder-lens_0.1.0_x64-setup.exe` in PowerShell.
+> - or run `Unblock-File folder-lens_0.3.0_x64-setup.exe` in PowerShell.
 
 ## Build & Run
 
@@ -55,12 +55,12 @@ npm run tauri build   # release build (msi/nsis/deb/appimage/…)
 cd src-tauri && cargo test
 ```
 
-Coverage: scanning and grouping, scan cancellation, non-overwriting move, move rollback, CSV/JSON export, preview (images / text / video).
+Coverage: scanning and grouping, scan cancellation, non-overwriting move, move rollback, CSV/JSON export, preview (images / text / audio / PDF / Office / PSD / video).
 
 ## Technical Details
 
 - **Stack:** Tauri 2 (Rust) + web UI (Vanilla JS, no frameworks).
-- **Key Rust crates:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **Key Rust crates:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `zip`, `quick-xml`, `psd`, `png`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **Storage:** local, data never leaves your computer.
 
 ---

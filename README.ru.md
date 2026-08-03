@@ -1,4 +1,4 @@
-# folder-lens — Инвентаризация папок
+﻿# folder-lens — Инвентаризация папок
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@
 
 ## Скриншот
 
-![folder-lens — инвентаризация папок](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — инвентаризация папок](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## Возможности
 
@@ -16,7 +16,7 @@
 - **Группировка по типам** — все файлы сгруппированы по расширению: количество и суммарный размер каждого типа.
 - **Поиск и сортировка** — мгновенный фильтр по имени, сортировка по размеру / количеству / имени.
 - **Список файлов** — каждый тип раскрывается в полный список файлов с путями.
-- **Предпросмотр** — клик по файлу показывает содержимое справа: изображения, текстовые файлы и видео.
+- **Предпросмотр** — клик по файлу показывает содержимое справа: изображения, текстовые файлы, аудио, PDF, документы Office (docx/xlsx/pptx), PSD и видео.
 - **Перемещение файлов** — отметьте файлы галочками и перенесите их в выбранную папку; дубликаты не перезаписываются (получают суффикс `(1)`); последнее перемещение можно отменить.
 - **Экспорт** — инвентарь выгружается в CSV (с BOM, разделитель `;`) и JSON.
 - **Пустые папки** — показываются отдельно и открываются в проводнике/Finder.
@@ -28,16 +28,16 @@
 
 | Платформа | Файл |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) или `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS (Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe` (NSIS) или `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS (Apple Silicon) | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS (приложение) | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`, `folder-lens_0.3.0_amd64.deb`, `folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen (неподписанный exe).** Сборки Windows не подписаны цифровым сертификатом (подпись платная), поэтому Windows при первом запуске может показать «Windows защитил ваш компьютер». Это нормально — файл безопасен:
 >
 > - нажмите **«Подробнее» → «Выполнить в любом случае»** (одноразово);
 > - или снимите пометку «скачано из интернета»: ПКМ по файлу → **Свойства** → галочка **«Разблокировать»** → ОК;
-> - либо из PowerShell: `Unblock-File folder-lens_0.1.0_x64-setup.exe`.
+> - либо из PowerShell: `Unblock-File folder-lens_0.3.0_x64-setup.exe`.
 
 ## Сборка и запуск
 
@@ -55,12 +55,12 @@ npm run tauri build   # релизная сборка (msi/nsis/deb/appimage/…
 cd src-tauri && cargo test
 ```
 
-Покрытие: сканирование и группировка, отмена сканирования, перемещение без перезаписи, откат перемещения, экспорт CSV/JSON, предпросмотр (изображения / текст / видео).
+Покрытие: сканирование и группировка, отмена сканирования, перемещение без перезаписи, откат перемещения, экспорт CSV/JSON, предпросмотр (изображения / текст / аудио / PDF / Office / PSD / видео).
 
 ## Технические детали
 
 - **Стек:** Tauri 2 (Rust) + веб-интерфейс (Vanilla JS, без фреймворков).
-- **Основные Rust-крейты:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **Основные Rust-крейты:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `zip`, `quick-xml`, `psd`, `png`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **Хранилище:** локальное, данные не покидают ваш компьютер.
 
 ---

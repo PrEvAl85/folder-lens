@@ -1,4 +1,4 @@
-# folder-lens — 文件夹清单
+﻿# folder-lens — 文件夹清单
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@
 
 ## 截图
 
-![folder-lens — 文件夹清单](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — 文件夹清单](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## 功能
 
@@ -16,7 +16,7 @@
 - **按类型分组** — 所有文件按扩展名分组：每种类型的数量和总大小。
 - **搜索和排序** — 按名称即时筛选，按大小 / 数量 / 名称排序。
 - **文件列表** — 每种类型展开为带路径的完整文件列表。
-- **预览** — 点击文件在右侧显示内容：图片、文本文件和视频。
+- **预览** — 点击文件在右侧显示内容：图片、文本文件、音频、PDF、Office 文档（docx/xlsx/pptx）、PSD 和视频。
 - **移动文件** — 勾选文件并移动到所选文件夹；不覆盖重复文件（它们会获得 `(1)` 后缀）；最后一次移动可以撤销。
 - **导出** — 清单导出为 CSV（带 BOM，分隔符 `;`）和 JSON。
 - **空文件夹** — 单独显示，点击可在 Explorer/Finder 中打开。
@@ -28,16 +28,16 @@
 
 | 平台 | 文件 |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe`（NSIS）或 `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS（Apple Silicon） | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe`（NSIS）或 `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS（Apple Silicon） | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS（应用） | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`、`folder-lens_0.1.0_amd64.deb`、`folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`、`folder-lens_0.3.0_amd64.deb`、`folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen（未签名 EXE）。** Windows 版本未使用数字证书签名（代码签名是付费的），因此 Windows 在首次启动时可能显示「Windows 已保护你的电脑」。这是正常的 — 文件是安全的：
 >
 > - 点击 **「更多信息」→「仍要运行」**（一次性）；
 > - 或移除「来自 Internet」标记：右键点击文件 → **属性** → 勾选 **「解除锁定」** → 确定；
-> - 或在 PowerShell 中运行 `Unblock-File folder-lens_0.1.0_x64-setup.exe`。
+> - 或在 PowerShell 中运行 `Unblock-File folder-lens_0.3.0_x64-setup.exe`。
 
 ## 构建与运行
 
@@ -55,12 +55,12 @@ npm run tauri build   # 发布构建（msi/nsis/deb/appimage/…）
 cd src-tauri && cargo test
 ```
 
-覆盖范围：扫描和分组、取消扫描、不覆盖的移动、移动回滚、CSV/JSON 导出、预览（图片 / 文本 / 视频）。
+覆盖范围：扫描和分组、取消扫描、不覆盖的移动、移动回滚、CSV/JSON 导出、预览（图片 / 文本 / 音频 / PDF / Office / PSD / 视频）。
 
 ## 技术细节
 
 - **技术栈：** Tauri 2（Rust）+ Web 界面（原生 JS，无框架）。
-- **主要 Rust 库：** `walkdir`、`serde`、`dunce`、`chrono`、`base64`、`tauri-plugin-dialog`、`tauri-plugin-opener`。
+- **主要 Rust 库：** `walkdir`、`serde`、`dunce`、`chrono`、`base64`、`zip`、`quick-xml`、`psd`、`png`、`tauri-plugin-dialog`、`tauri-plugin-opener`。
 - **存储：** 本地存储，数据永远不会离开您的计算机。
 
 ---

@@ -1,6 +1,6 @@
 [package]
 name = "folder-lens"
-version = "0.2.1"
+version = "0.3.0"
 description = "Lightweight cross-platform folder inventory scanner — see all files grouped by type"
 authors = ["PrEvAl85"]
 edition = "2021"
@@ -27,4 +27,8 @@ walkdir = "2"
 dunce = "1"
 chrono = "0.4"
 base64 = "0.22"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+quick-xml = "0.37"
+psd = "0.1"
+png = "0.18"
 

@@ -1,4 +1,4 @@
-# folder-lens — フォルダー在庫
+﻿# folder-lens — フォルダー在庫
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@
 
 ## スクリーンショット
 
-![folder-lens — フォルダー在庫](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — フォルダー在庫](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## 機能
 
@@ -16,7 +16,7 @@
 - **種類別のグループ化** — すべてのファイルを拡張子ごとにグループ化：種類ごとの数と合計サイズ。
 - **検索と並べ替え** — 名前による即時フィルター、サイズ / 数 / 名前での並べ替え。
 - **ファイル一覧** — 各種類がパス付きの完全なファイル一覧に展開されます。
-- **プレビュー** — ファイルをクリックすると、右側に内容が表示されます：画像、テキストファイル、動画。
+- **プレビュー** — ファイルをクリックすると、右側に内容が表示されます：画像、テキストファイル、音声、PDF、Office ドキュメント（docx/xlsx/pptx）、PSD、動画。
 - **ファイルの移動** — ファイルにチェックを入れて選択したフォルダーへ移動；重複は上書きされません（`(1)` サフィックスが付きます）；最後の移動は取り消せます。
 - **エクスポート** — 在庫を CSV（BOM付き、区切り文字 `;`）と JSON に出力。
 - **空のフォルダー** — 別途表示され、クリックで Explorer/Finder が開きます。
@@ -28,16 +28,16 @@
 
 | プラットフォーム | ファイル |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe`（NSIS）または `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS（Apple Silicon） | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe`（NSIS）または `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS（Apple Silicon） | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS（アプリ） | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`、`folder-lens_0.1.0_amd64.deb`、`folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`、`folder-lens_0.3.0_amd64.deb`、`folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen（署名なし EXE）。** Windows ビルドはデジタル証明書で署名されていません（署名は有料）ため、初回起動時に Windows が「Windows によって PC が保護されました」と表示することがあります。これは正常です — ファイルは安全です：
 >
 > - **「詳細情報」→「それでも実行する」** をクリック（一度だけ）；
 > - または「インターネットからダウンロード」のマークを外す：ファイルを右クリック → **プロパティ** → **「ブロックの解除」** にチェック → OK；
-> - または PowerShell で `Unblock-File folder-lens_0.1.0_x64-setup.exe` を実行。
+> - または PowerShell で `Unblock-File folder-lens_0.3.0_x64-setup.exe` を実行。
 
 ## ビルドと実行
 
@@ -55,12 +55,12 @@ npm run tauri build   # リリースビルド（msi/nsis/deb/appimage/…）
 cd src-tauri && cargo test
 ```
 
-カバレッジ：スキャンとグループ化、スキャンのキャンセル、上書きしない移動、移動の取り消し、CSV/JSON エクスポート、プレビュー（画像 / テキスト / 動画）。
+カバレッジ：スキャンとグループ化、スキャンのキャンセル、上書きしない移動、移動の取り消し、CSV/JSON エクスポート、プレビュー（画像 / テキスト / 音声 / PDF / Office / PSD / 動画）。
 
 ## 技術詳細
 
 - **スタック：** Tauri 2（Rust）+ Web UI（Vanilla JS、フレームワークなし）。
-- **主要な Rust クレート：** `walkdir`、`serde`、`dunce`、`chrono`、`base64`、`tauri-plugin-dialog`、`tauri-plugin-opener`。
+- **主要な Rust クレート：** `walkdir`、`serde`、`dunce`、`chrono`、`base64`、`zip`、`quick-xml`、`psd`、`png`、`tauri-plugin-dialog`、`tauri-plugin-opener`。
 - **保存：** ローカル。データがあなたのコンピューターから出ることはありません。
 
 ---

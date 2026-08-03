@@ -390,18 +390,27 @@ async function updatePreview() {
         ? `${t("preview_truncated")}${res.data}`
         : res.data;
       els.previewBody.appendChild(pre);
-    } else if (res.kind === "video") {
-      const video = document.createElement("video");
-      video.controls = true;
-      video.preload = "metadata";
-      if (video.canPlayType(res.mime)) {
-        video.src = convertFileSrc(f.path);
-        els.previewBody.appendChild(video);
+    } else if (res.kind === "video" || res.kind === "audio") {
+      const media = document.createElement(res.kind === "video" ? "video" : "audio");
+      media.controls = true;
+      if (res.kind === "video") media.preload = "metadata";
+      if (media.canPlayType(res.mime)) {
+        media.src = convertFileSrc(res.path || f.path);
+        els.previewBody.appendChild(media);
       } else {
         els.previewBody.appendChild(
-          note(t("video_codec", { ext: extLabel(f.extension) })),
+          note(
+            t(res.kind === "video" ? "video_codec" : "audio_codec", {
+              ext: extLabel(f.extension),
+            }),
+          ),
         );
       }
+    } else if (res.kind === "pdf") {
+      const iframe = document.createElement("iframe");
+      iframe.src = convertFileSrc(res.path || f.path);
+      iframe.title = f.name;
+      els.previewBody.appendChild(iframe);
     } else {
       els.previewBody.appendChild(note(res.note));
     }

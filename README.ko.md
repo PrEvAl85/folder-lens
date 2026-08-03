@@ -1,4 +1,4 @@
-# folder-lens — 폴더 인벤토리
+﻿# folder-lens — 폴더 인벤토리
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@
 
 ## 스크린샷
 
-![folder-lens — 폴더 인벤토리](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — 폴더 인벤토리](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## 기능
 
@@ -16,7 +16,7 @@
 - **유형별 그룹화** — 모든 파일을 확장자별로 그룹화: 유형별 개수와 총 크기.
 - **검색 및 정렬** — 이름별 즉시 필터, 크기 / 개수 / 이름별 정렬.
 - **파일 목록** — 각 유형이 경로가 포함된 전체 파일 목록으로 펼쳐집니다.
-- **미리 보기** — 파일을 클릭하면 오른쪽에 내용이 표시됩니다: 이미지, 텍스트 파일, 비디오.
+- **미리 보기** — 파일을 클릭하면 오른쪽에 내용이 표시됩니다: 이미지, 텍스트 파일, 오디오, PDF, Office 문서(docx/xlsx/pptx), PSD, 비디오.
 - **파일 이동** — 파일에 체크 표시하고 선택한 폴더로 이동; 중복 파일은 덮어쓰지 않습니다(`(1)` 접미사가 붙습니다); 마지막 이동은 취소할 수 있습니다.
 - **내보내기** — 인벤토리를 CSV(BOM 포함, 구분자 `;`) 및 JSON으로 내보냅니다.
 - **빈 폴더** — 별도로 표시되며 클릭하면 Explorer/Finder에서 열립니다.
@@ -28,16 +28,16 @@
 
 | 플랫폼 | 파일 |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe`(NSIS) 또는 `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS(Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe`(NSIS) 또는 `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS(Apple Silicon) | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS(앱) | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`, `folder-lens_0.3.0_amd64.deb`, `folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen(서명되지 않은 EXE).** Windows 빌드는 디지털 인증서로 서명되지 않았으므로(코드 서명은 유료), Windows가 첫 실행 시 'Windows에서 PC를 보호했습니다'를 표시할 수 있습니다. 이는 정상입니다 — 파일은 안전합니다:
 >
 > - **'추가 정보' → '그래도 실행'** 을 클릭하세요(1회).
 > - 또는 '인터넷에서 다운로드' 표시를 제거하세요: 파일을 마우스 오른쪽 클릭 → **속성** → **'차단 해제'** 체크 → 확인.
-> - 또는 PowerShell에서 `Unblock-File folder-lens_0.1.0_x64-setup.exe`를 실행하세요.
+> - 또는 PowerShell에서 `Unblock-File folder-lens_0.3.0_x64-setup.exe`를 실행하세요.
 
 ## 빌드 및 실행
 
@@ -55,12 +55,12 @@ npm run tauri build   # 릴리스 빌드(msi/nsis/deb/appimage/…)
 cd src-tauri && cargo test
 ```
 
-범위: 스캔 및 그룹화, 스캔 취소, 덮어쓰지 않는 이동, 이동 롤백, CSV/JSON 내보내기, 미리 보기(이미지 / 텍스트 / 비디오).
+범위: 스캔 및 그룹화, 스캔 취소, 덮어쓰지 않는 이동, 이동 롤백, CSV/JSON 내보내기, 미리 보기(이미지 / 텍스트 / 오디오 / PDF / Office / PSD / 비디오).
 
 ## 기술 세부 정보
 
 - **스택:** Tauri 2(Rust) + 웹 UI(프레임워크 없는 Vanilla JS).
-- **주요 Rust 크레이트:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **주요 Rust 크레이트:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `zip`, `quick-xml`, `psd`, `png`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **저장:** 로컬. 데이터가 컴퓨터를 떠나지 않습니다.
 
 ---

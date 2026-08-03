@@ -69,6 +69,8 @@ const MESSAGES = {
     preview_truncated: "(showing first 256 KB)\n\n",
     video_codec:
       "Built-in preview does not support this video codec ({ext}).",
+    audio_codec:
+      "Built-in preview does not support this audio codec ({ext}).",
     preview_error: "Preview error: {e}",
     pick_title: "Choose a folder to scan",
     move_title: "Where to move the files?",
@@ -133,6 +135,7 @@ const MESSAGES = {
     preview_loading: "Загрузка предпросмотра…",
     preview_truncated: "(показаны первые 256 КБ)\n\n",
     video_codec: "Встроенный предпросмотр не поддерживает этот видеокодек ({ext}).",
+    audio_codec: "Встроенный предпросмотр не поддерживает этот аудиокодек ({ext}).",
     preview_error: "Ошибка предпросмотра: {e}",
     pick_title: "Выберите папку для сканирования",
     move_title: "Куда переместить файлы?",
@@ -197,6 +200,8 @@ const MESSAGES = {
     preview_truncated: "(erste 256 KB angezeigt)\n\n",
     video_codec:
       "Die eingebaute Vorschau unterstützt diesen Videocodec ({ext}) nicht.",
+    audio_codec:
+      "Die eingebaute Vorschau unterstützt diesen Audiocodec ({ext}) nicht.",
     preview_error: "Vorschau-Fehler: {e}",
     pick_title: "Wählen Sie einen Ordner zum Scannen",
     move_title: "Wohin Dateien verschieben?",
@@ -261,6 +266,8 @@ const MESSAGES = {
     preview_truncated: "(mostrando los primeros 256 KB)\n\n",
     video_codec:
       "La vista previa integrada no admite este códec de vídeo ({ext}).",
+    audio_codec:
+      "La vista previa integrada no admite este códec de audio ({ext}).",
     preview_error: "Error de vista previa: {e}",
     pick_title: "Elija una carpeta para escanear",
     move_title: "¿A dónde mover los archivos?",
@@ -321,6 +328,7 @@ const MESSAGES = {
     preview_loading: "正在加载预览…",
     preview_truncated: "（仅显示前 256 KB）\n\n",
     video_codec: "内置预览不支持此视频编码格式（{ext}）。",
+    audio_codec: "内置预览不支持此音频编码格式（{ext}）。",
     preview_error: "预览错误：{e}",
     pick_title: "选择要扫描的文件夹",
     move_title: "将文件移动到何处？",
@@ -382,6 +390,8 @@ const MESSAGES = {
     preview_truncated: "(最初の256KBを表示)\n\n",
     video_codec:
       "内蔵プレビューはこのビデオコーデック（{ext}）に対応していません。",
+    audio_codec:
+      "内蔵プレビューはこのオーディオコーデック（{ext}）に対応していません。",
     preview_error: "プレビューエラー：{e}",
     pick_title: "スキャンするフォルダーを選択",
     move_title: "ファイルの移動先は？",
@@ -442,6 +452,7 @@ const MESSAGES = {
     preview_loading: "미리 보기 로드 중…",
     preview_truncated: "(처음 256KB만 표시)\n\n",
     video_codec: "내장 미리 보기에서 이 비디오 코덱({ext})을 지원하지 않습니다.",
+    audio_codec: "내장 미리 보기에서 이 오디오 코덱({ext})을 지원하지 않습니다.",
     preview_error: "미리 보기 오류: {e}",
     pick_title: "스캔할 폴더 선택",
     move_title: "파일을 어디로 이동할까요?",

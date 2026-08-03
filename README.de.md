@@ -1,4 +1,4 @@
-# folder-lens — Ordnerinventar
+﻿# folder-lens — Ordnerinventar
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@ Praktisch, wenn Dateien in tiefen Unterordner-Ketten „vergraben" sind: Eine fl
 
 ## Screenshot
 
-![folder-lens — Ordnerinventar](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — Ordnerinventar](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## Funktionen
 
@@ -16,7 +16,7 @@ Praktisch, wenn Dateien in tiefen Unterordner-Ketten „vergraben" sind: Eine fl
 - **Nach Typ gruppieren** — alle Dateien nach Erweiterung gruppiert: Anzahl und Gesamtgröße pro Typ.
 - **Suchen und sortieren** — sofortiger Namensfilter, Sortierung nach Größe / Anzahl / Name.
 - **Dateiliste** — jeder Typ erweitert sich zu einer vollständigen Liste der Dateien mit Pfaden.
-- **Vorschau** — Klick auf eine Datei zeigt den Inhalt rechts an: Bilder, Textdateien und Videos.
+- **Vorschau** — Klick auf eine Datei zeigt den Inhalt rechts an: Bilder, Textdateien, Audio, PDF, Office-Dokumente (docx/xlsx/pptx), PSD und Videos.
 - **Dateien verschieben** — markieren Sie Dateien und verschieben Sie sie in den gewählten Ordner; Duplikate werden nicht überschrieben (sie erhalten das Suffix `(1)`); das letzte Verschieben kann rückgängig gemacht werden.
 - **Export** — das Inventar wird als CSV (mit BOM, Trennzeichen `;`) und JSON exportiert.
 - **Leere Ordner** — werden separat angezeigt, Klick öffnet sie im Explorer/Finder.
@@ -28,16 +28,16 @@ Laden Sie den Installer für Ihre Plattform von der [Releases](https://github.co
 
 | Plattform | Datei |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) oder `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS (Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe` (NSIS) oder `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS (Apple Silicon) | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS (App) | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`, `folder-lens_0.3.0_amd64.deb`, `folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen (unsignierte EXE).** Die Windows-Builds sind nicht mit einem digitalen Zertifikat signiert (Signierung ist kostenpflichtig), daher kann Windows beim ersten Start „Windows hat Ihren PC geschützt“ anzeigen. Das ist normal — die Datei ist sicher:
 >
 > - klicken Sie auf **„Weitere Informationen“ → „Trotzdem ausführen“** (einmalig);
 > - oder entfernen Sie die Markierung „Aus dem Internet heruntergeladen“: Rechtsklick auf die Datei → **Eigenschaften** → Häkchen **„Blockierung aufheben“** → OK;
-> - oder führen Sie in PowerShell `Unblock-File folder-lens_0.1.0_x64-setup.exe` aus.
+> - oder führen Sie in PowerShell `Unblock-File folder-lens_0.3.0_x64-setup.exe` aus.
 
 ## Build & Start
 
@@ -55,12 +55,12 @@ npm run tauri build   # Release-Build (msi/nsis/deb/appimage/…)
 cd src-tauri && cargo test
 ```
 
-Abdeckung: Scannen und Gruppieren, Scan-Abbruch, Verschieben ohne Überschreiben, Verschieben-Rückgängig, CSV/JSON-Export, Vorschau (Bilder / Text / Video).
+Abdeckung: Scannen und Gruppieren, Scan-Abbruch, Verschieben ohne Überschreiben, Verschieben-Rückgängig, CSV/JSON-Export, Vorschau (Bilder / Text / Audio / PDF / Office / PSD / Video).
 
 ## Technische Details
 
 - **Stack:** Tauri 2 (Rust) + Web-UI (Vanilla JS, ohne Frameworks).
-- **Wichtigste Rust-Crates:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **Wichtigste Rust-Crates:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `zip`, `quick-xml`, `psd`, `png`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **Speicherung:** lokal, Daten verlassen niemals Ihren Computer.
 
 ---

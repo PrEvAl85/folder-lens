@@ -1,4 +1,4 @@
-# folder-lens — Inventario de carpetas
+﻿# folder-lens — Inventario de carpetas
 
 [English](README.md) | [Русский](README.ru.md) | [Deutsch](README.de.md) | [Español](README.es.md) | [简体中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
@@ -8,7 +8,7 @@ Una herramienta ligera de escritorio para el **inventario de carpetas**: escaneo
 
 ## Captura de pantalla
 
-![folder-lens — inventario de carpetas](https://github.com/PrEvAl85/folder-lens/releases/download/v0.1.0/Screenshot_1.png)
+![folder-lens — inventario de carpetas](https://github.com/PrEvAl85/folder-lens/releases/download/v0.3.0/Screenshot_1.png)
 
 ## Características
 
@@ -16,7 +16,7 @@ Una herramienta ligera de escritorio para el **inventario de carpetas**: escaneo
 - **Agrupar por tipo** — todos los archivos agrupados por extensión: cantidad y tamaño total por tipo.
 - **Buscar y ordenar** — filtro instantáneo por nombre, ordenar por tamaño / cantidad / nombre.
 - **Lista de archivos** — cada tipo se expande en una lista completa de archivos con rutas.
-- **Vista previa** — al hacer clic en un archivo se muestra su contenido a la derecha: imágenes, archivos de texto y vídeo.
+- **Vista previa** — al hacer clic en un archivo se muestra su contenido a la derecha: imágenes, archivos de texto, audio, PDF, documentos de Office (docx/xlsx/pptx), PSD y vídeo.
 - **Mover archivos** — marque los archivos y muévalos a la carpeta elegida; los duplicados no se sobrescriben (reciben el sufijo `(1)`); el último movimiento se puede deshacer.
 - **Exportar** — el inventario se exporta a CSV (con BOM, separador `;`) y JSON.
 - **Carpetas vacías** — se muestran por separado, un clic las abre en Explorer/Finder.
@@ -28,16 +28,16 @@ Descargue el instalador para su plataforma desde la página de [Releases](https:
 
 | Plataforma | Archivo |
 |-----------|------|
-| Windows | `folder-lens_0.1.0_x64-setup.exe` (NSIS) o `folder-lens_0.1.0_x64_en-US.msi` |
-| macOS (Apple Silicon) | `folder-lens_0.1.0_aarch64.dmg` |
+| Windows | `folder-lens_0.3.0_x64-setup.exe` (NSIS) o `folder-lens_0.3.0_x64_en-US.msi` |
+| macOS (Apple Silicon) | `folder-lens_0.3.0_aarch64.dmg` |
 | macOS (aplicación) | `folder-lens_aarch64.app.tar.gz` |
-| Linux | `folder-lens_0.1.0_amd64.AppImage`, `folder-lens_0.1.0_amd64.deb`, `folder-lens-0.1.0-1.x86_64.rpm` |
+| Linux | `folder-lens_0.3.0_amd64.AppImage`, `folder-lens_0.3.0_amd64.deb`, `folder-lens-0.3.0-1.x86_64.rpm` |
 
 > **Windows SmartScreen (EXE sin firmar).** Las compilaciones de Windows no están firmadas con un certificado digital (la firma es de pago), por lo que Windows puede mostrar «Windows protegió su equipo» al primer inicio. Esto es normal — el archivo es seguro:
 >
 > - haga clic en **«Más información» → «Ejecutar de todos modos»** (una vez);
 > - o quite la marca «descargado de Internet»: clic derecho en el archivo → **Propiedades** → marque **«Desbloquear»** → Aceptar;
-> - o ejecute `Unblock-File folder-lens_0.1.0_x64-setup.exe` en PowerShell.
+> - o ejecute `Unblock-File folder-lens_0.3.0_x64-setup.exe` en PowerShell.
 
 ## Compilación y ejecución
 
@@ -55,12 +55,12 @@ npm run tauri build   # compilación de lanzamiento (msi/nsis/deb/appimage/…)
 cd src-tauri && cargo test
 ```
 
-Cobertura: escaneo y agrupación, cancelación de escaneo, mover sin sobrescribir, deshacer movimiento, exportación CSV/JSON, vista previa (imágenes / texto / vídeo).
+Cobertura: escaneo y agrupación, cancelación de escaneo, mover sin sobrescribir, deshacer movimiento, exportación CSV/JSON, vista previa (imágenes / texto / audio / PDF / Office / PSD / vídeo).
 
 ## Detalles técnicos
 
 - **Stack:** Tauri 2 (Rust) + interfaz web (Vanilla JS, sin frameworks).
-- **Crates de Rust principales:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
+- **Crates de Rust principales:** `walkdir`, `serde`, `dunce`, `chrono`, `base64`, `zip`, `quick-xml`, `psd`, `png`, `tauri-plugin-dialog`, `tauri-plugin-opener`.
 - **Almacenamiento:** local, los datos nunca salen de su ordenador.
 
 ---

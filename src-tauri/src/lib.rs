@@ -1,6 +1,9 @@
 mod actions;
 mod export;
+mod media;
+mod office;
 mod preview;
+mod psd;
 mod scan;
 
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -74,8 +77,8 @@ fn export_inventory(
 }
 
 #[tauri::command]
-fn preview_file(path: String) -> Result<preview::PreviewData, String> {
-    preview::preview_file(&path)
+async fn preview_file(app: AppHandle, path: String) -> Result<preview::PreviewData, String> {
+    preview::preview_file(app, path).await
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
